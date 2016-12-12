@@ -2,9 +2,6 @@
 Polygon generator for SACAD
 
 
-Release Notes - SACAD Polygon Generator
-
-
 Provided and maintained by: Duncan Margetts, SA Ambulance Service
 Contact email: polygon@duncanmargetts.com
 Latest version URL: http://fleetmap.com.au/polygon
