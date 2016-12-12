@@ -3,7 +3,7 @@ html,body{
 	padding:0;
 	width:100%;
 	height:100%;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family:Tahoma, Helvetica, sans-serif;
 }
 
 form.pay{
@@ -12,12 +12,14 @@ form.pay{
 }
 div#header{	
 	vertical-align:middle;
-	border-bottom:1px solid #000;
+	border-bottom:0px solid #000;
 }
 div#main-map{
+	margin-top:5px;
 	width:70%;
-	height:70%;
+	height:92%;
 	float:left;
+	margin-bottom:5px;
 }
 div#side{
 	width:30%;
@@ -26,18 +28,26 @@ div#side{
 
 div#dataPanel{
 	width:90%;
-	height:50%;
+	height:76%;
+	margin-bottom:5px;
 	overflow:auto;
 	border:2px solid #DDDDDD;
+	font-family:Courier;
+	margin-left:10px;
+	margin-top: 10px;
+	
 }
 div#side input{
 	width:90%;
 }
 
 div#side input.navi{
-	font-size:18px;
+	font-size:16px;
 	height:30px;
-	margin-bottom:10px;
+	margin-bottom:1px;
+	margin-right: 10px;
+	margin-left: 10px;
+	margin-top:5px;
 }
 div ul{
 	margin-top:30px;
@@ -59,7 +69,8 @@ div ul li.title{
 div#header p{
 	color:#888;
 	font-size:14px;
-	padding-left:20px;
+	padding-left:5px;
+	padding-top:5px;
 }
 span.instruction{
 	font-weight:bold;
