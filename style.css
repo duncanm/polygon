@@ -26,6 +26,19 @@ div#side{
 	float:left;
 }
 
+div#currentPanel{
+	width:90%;
+	height:5%;
+	margin-bottom:5px;
+	overflow:auto;
+	border:2px solid #DDDDDD;
+	font-family:Courier;
+	margin-left:10px;
+	margin-top: 10px;
+	
+}
+
+
 div#dataPanel{
 	width:90%;
 	height:76%;
