@@ -26,6 +26,36 @@
 		 map = new google.maps.Map(document.getElementById('main-map'), myOptions);
 		 
 		 var creator = new PolygonCreator(map);
+		
+		$(document).keydown(function(e) {
+        if (e.keyCode == 66 && e.ctrlKey) {
+             copyToClipboard(document.getElementById("currentPanel"));
+			}
+		if (e.keyCode == 67 && e.ctrlKey) {
+            copyToClipboard(document.getElementById("dataPanel"));
+		}
+		});
+
+
+		
+		 google.maps.event.addListener(map, 'mousemove', function(event) {
+				$('#currentPanel').empty()
+				
+				var northeast = convertreverse(event.latLng.lat(), event.latLng.lng());
+				var northing = northeast[0];
+				var easting = northeast[1];
+				
+				var northingarray = northing.toString().split(".");
+				var eastingarray = easting.toString().split(".");
+							
+				var northingString = northingarray[0] + northingarray[1].substring(0,2);
+				var eastingString = eastingarray[0] +  eastingarray[1].substring(0,2);
+
+			   $('#currentPanel').append("Current Lat/Lng:" + event.latLng.lat().toFixed(5) + "/" + event.latLng.lng().toFixed(5) + "<BR />\n");
+			   $('#currentPanel').append("Current X/Y:" + northingString + "/" + eastingString );
+				
+			});
+		 
 		 
 		 //reset
 		 $('#reset').click(function(){ 
@@ -56,9 +86,9 @@
 		 		} else {
 				
 						var paths = creator.pen.polygon.getPlots();
-						$('#dataPanel').append("ESZ: xxx<BR />");
-						$('#dataPanel').append("VALUE: THIS FIELD MUST BE PRESENT<BR />");
-						$('#dataPanel').append("NUM: " + paths.getAt(0).length + "<BR />");
+						$('#dataPanel').append("ESZ: xxx<BR />\n");
+						$('#dataPanel').append("VALUE: THIS FIELD MUST BE PRESENT<BR />\n");
+						$('#dataPanel').append("NUM: " + paths.getAt(0).length + "<BR />\n");
 						paths.getAt(0).forEach(function(value, index){
 							northeast = convertString( value.toString() )
 							
@@ -72,11 +102,11 @@
 							var eastingString = eastingarray[0] +  eastingarray[1].substring(0,2);
 							
 														 
-							$('#dataPanel').append("XY: " + northingString + "    " + eastingString );
+							$('#dataPanel').append("XY: " + northingString + "    " + eastingString + "\n");
 							$('#dataPanel').append("<br />");
 							
 							});
-							$('#dataPanel').append("END");
+							$('#dataPanel').append("END\n");
 							
 						}
 				}
@@ -91,13 +121,8 @@
 		 lat = 	parseFloat(values[0]);
 		 lng =  parseFloat(values[1]);
 		 
-		 //console.log(convertreverse(lat, lng));
-		 
 		 return (convertreverse(lat, lng));
-		 
-		 
-		 
-		 
+		  
 		}
 	
 	
@@ -107,24 +132,73 @@
 			return(proj4(to, from, [yin, xin]));
 			}
 
-		 
-		 
-		 
-		 //show color
-		 $('#showColor').click(function(){ 
-		 		$('#dataPanel').empty();
-		 		if(null==creator.showData()){
-		 			$('#dataPanel').append('Please first create a polygon');
-		 		}else{
-		 				$('#dataPanel').append(creator.showColor());
-		 		}
+
+function copyToClipboard(elem) {
+	  // create hidden text element, if it doesn't already exist
+    var targetId = "_hiddenCopyText_";
+    var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+    var origSelectionStart, origSelectionEnd;
+    if (isInput) {
+        // can just use the original source element for the selection and copy
+        target = elem;
+        origSelectionStart = elem.selectionStart;
+        origSelectionEnd = elem.selectionEnd;
+    } else {
+        // must use a temporary form element for the selection and copy
+        target = document.getElementById(targetId);
+        if (!target) {
+            var target = document.createElement("textarea");
+            target.style.position = "absolute";
+            target.style.left = "-9999px";
+            target.style.top = "0";
+            target.id = targetId;
+            document.body.appendChild(target);
+        }
+        target.textContent = elem.textContent;
+    }
+    // select the content
+    var currentFocus = document.activeElement;
+    target.focus();
+    target.setSelectionRange(0, target.value.length);
+    
+    // copy the selection
+    var succeed;
+    try {
+    	  succeed = document.execCommand("copy");
+    } catch(e) {
+        succeed = false;
+    }
+    // restore original focus
+    if (currentFocus && typeof currentFocus.focus === "function") {
+        currentFocus.focus();
+    }
+    
+    if (isInput) {
+        // restore prior selection
+        elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+    } else {
+        // clear temporary content
+        target.textContent = "";
+    }
+    return succeed;
+	}
+
+	
+	 //show color
+	 $('#showColor').click(function(){ 
+	 		$('#dataPanel').empty();
+	 		if(null==creator.showData()){
+	 			$('#dataPanel').append('Please first create a polygon');
+	 		}else{
+	 				$('#dataPanel').append(creator.showColor());
+	 		}
 		 });
 	});	
 	</script>
 </head>
 <body>
 	<div id="header">
-	   <p><span class="instruction">SACAD Polygon creator </span>Left click on the map to create markers, click on your first marker to finish the polygon.</p>
+	   <p><span class="instruction">SACAD Polygon creator </span>Left click on the map to create markers, click on your first marker to finish the polygon. <BR /> Ctrl-C to copy your Polygon to your clipboard. Ctrl-B to copy the current mouse position to your Clipboard</p>
 	</div>
 	<div id="main-map">
 	</div>
@@ -132,6 +206,8 @@
 		<input id="reset" value="Reset" type="button" class="navi"/>
 		<input id="showData"  value="Show Latitudes/Longitudes" type="button" class="navi"/>
 		<input id="convertData"  value="Generate SACAD Polygon (Lambert Conf.)" type="button" class="navi"/>
+		<div id="currentPanel">
+		</div>
 		<div   id="dataPanel">
 		</div>
 	</div>
