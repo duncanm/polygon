@@ -58,8 +58,8 @@
 				var northingString = northingarray[0] + northingarray[1].substring(0,2);
 				var eastingString = eastingarray[0] +  eastingarray[1].substring(0,2);
 
-			   $('#currentPanel').append("Current Lat/Lng: " + event.latLng.lat().toFixed(5) + "/" + event.latLng.lng().toFixed(5) + "<BR />\n");
-			   $('#currentPanel').append("Current X/Y: " + northingString + "/" + eastingString );
+			   $('#currentPanel').append("Lat/Lng: " + event.latLng.lat().toFixed(5) + "/" + event.latLng.lng().toFixed(5) + "<BR />\n");
+			   $('#currentPanel').append("X/Y: " + northingString + "/" + eastingString );
 				
 			});
 		 
@@ -268,17 +268,16 @@ function copyToClipboard(elem) {
 		<input id="convertData"  value="Generate SACAD Polygon" type="button" class="navi"/>
 		<input id="visualise"  value="Visualise Polygon" type="button" class="navi"/>
 		
+		<label class="mainLabel">Current Mouse Coordinates</label>	
 		<div id="currentPanel">
 		</div>
-		
+		<label class="mainLabel">Paste Polygon below to visualise</label>	
 		<div id="visualisePanel">
-			<div id="visualiselabeldvid">
-				<label>Paste Polygon here to visualise</label>
-				<textarea id="visualisePolygonTextarea">
-				</textarea>
-			</div>
-			</div>	
+			<textarea id="visualisePolygonTextarea">
+			</textarea>
+		</div>	
 	
+		<label class="mainLabel">Generated Polygon</label>	
 		<div   id="dataPanel">
 		</div>
 		
