@@ -17,6 +17,13 @@
 	<script type="text/javascript">
 	$(function(){
 		  //create map
+		  
+ 
+		  
+		  
+		  
+		 var map;
+		 var newpolygon;
 		 var adelaideCenter=new google.maps.LatLng(-34.9285, 138.6007);
 		 var myOptions = {
 		  	zoom: 10,
@@ -51,8 +58,8 @@
 				var northingString = northingarray[0] + northingarray[1].substring(0,2);
 				var eastingString = eastingarray[0] +  eastingarray[1].substring(0,2);
 
-			   $('#currentPanel').append("Current Lat/Lng:" + event.latLng.lat().toFixed(5) + "/" + event.latLng.lng().toFixed(5) + "<BR />\n");
-			   $('#currentPanel').append("Current X/Y:" + northingString + "/" + eastingString );
+			   $('#currentPanel').append("Current Lat/Lng: " + event.latLng.lat().toFixed(5) + "/" + event.latLng.lng().toFixed(5) + "<BR />\n");
+			   $('#currentPanel').append("Current X/Y: " + northingString + "/" + eastingString );
 				
 			});
 		 
@@ -65,7 +72,55 @@
 		 		creator=null;
 		 		
 		 		creator=new PolygonCreator(map);
+				if (newpolygon){
+					newpolygon.setMap(null);
+				}
+				$('#visualisePolygonTextarea').val('');
 		 });		 
+		 
+		//visualise
+		 $('#visualise').click(function(){ 
+				var startx, starty;
+				var points = [];
+				 
+				
+				var lines = $('#visualisePolygonTextarea').val().split('\n');
+				for(var i = 0;i < lines.length;i++){
+					var nextline = lines[i].split(' ');
+					if (nextline[0] == 'XY:') {
+						nextline[1] = nextline[1].trim();
+						nextline[2] = nextline[2].trim();
+						x = nextline[1].slice(0,nextline[1].length - 2) + '.' + nextline[1].slice(-2);		
+						y = nextline[2].slice(0,nextline[2].length - 2) + '.' + nextline[2].slice(-2);		
+						
+						if (i==0) {
+							startx = x;
+							starty = y;
+						}
+					
+					var latlng = convertToLatLng(parseFloat(y), parseFloat(x));
+					points.push(new google.maps.LatLng(latlng[1],latlng[0]));
+					
+					}
+				}
+				points.push(new google.maps.LatLng(points[0].lat, points[0].lng));
+				newpolygon = new google.maps.Polygon({
+					  paths: points,
+					  strokeColor: '#FF0000',
+					  strokeOpacity: 0.8,
+					  strokeWeight: 2,
+					  fillColor: '#FF0000',
+					  fillOpacity: 0.35
+					});
+					newpolygon.setMap(map);
+					map.setCenter(points[0]);
+		 
+				
+		 });		 
+		 
+		 
+		 
+		 
 		 
 		 
 		 //show paths
@@ -125,6 +180,11 @@
 		  
 		}
 	
+		function convertToLatLng(xin, yin) {
+			var firstProjection = '+proj=lcc +lat_1=-28 +lat_2=-36 +lat_0=-32 +lon_0=135 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs';
+			var secondProjection = "+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs";
+			return(proj4(firstProjection,secondProjection,[yin,xin]));
+			}
 	
 		function convertreverse(xin, yin) {
 			var from = '+proj=lcc +lat_1=-28 +lat_2=-36 +lat_0=-32 +lon_0=135 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'; 
@@ -205,11 +265,23 @@ function copyToClipboard(elem) {
 	<div id="side">
 		<input id="reset" value="Reset" type="button" class="navi"/>
 		<input id="showData"  value="Show Latitudes/Longitudes" type="button" class="navi"/>
-		<input id="convertData"  value="Generate SACAD Polygon (Lambert Conf.)" type="button" class="navi"/>
+		<input id="convertData"  value="Generate SACAD Polygon" type="button" class="navi"/>
+		<input id="visualise"  value="Visualise Polygon" type="button" class="navi"/>
+		
 		<div id="currentPanel">
 		</div>
+		
+		<div id="visualisePanel">
+			<div id="visualiselabeldvid">
+				<label>Paste Polygon here to visualise</label>
+				<textarea id="visualisePolygonTextarea">
+				</textarea>
+			</div>
+			</div>	
+	
 		<div   id="dataPanel">
 		</div>
+		
 	</div>
 </body>
 </html>
