@@ -26,6 +26,12 @@ div#side{
 	float:left;
 }
 
+
+.mainLabel{
+	margin-left:10px;
+}
+
+
 div#currentPanel{
 	width:90%;
 	height:8%;
