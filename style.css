@@ -28,7 +28,7 @@ div#side{
 
 div#currentPanel{
 	width:90%;
-	height:5%;
+	height:8%;
 	margin-bottom:5px;
 	overflow:auto;
 	border:2px solid #DDDDDD;
@@ -38,10 +38,28 @@ div#currentPanel{
 	
 }
 
+div#visualisePanel{
+	width:90%;
+	height:15%;
+	margin-bottom:5px;
+	overflow:auto;
+	border:2px solid #DDDDDD;
+	font-family:Courier;
+	margin-left:10px;
+	margin-top: 10px;
+	
+}
+
+#visualisePolygonTextarea{
+ width:100%;
+ height:100%;
+ }
+
+
 
 div#dataPanel{
 	width:90%;
-	height:76%;
+	height:55%;
 	margin-bottom:5px;
 	overflow:auto;
 	border:2px solid #DDDDDD;
