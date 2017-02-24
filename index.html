@@ -18,8 +18,15 @@
 	$(function(){
 		  //create map
 		  
- 
-		  
+		 var noPoi = [
+		{
+			featureType: "poi",
+			stylers: [
+			  { visibility: "off" }
+			]   
+		  }
+		];
+
 		  
 		  
 		 var map;
@@ -31,6 +38,7 @@
 		  	mapTypeId: google.maps.MapTypeId.ROADMAP
 		  }
 		 map = new google.maps.Map(document.getElementById('main-map'), myOptions);
+		 map.setOptions({styles: noPoi});
 		 
 		 var creator = new PolygonCreator(map);
 		
@@ -277,7 +285,7 @@ function copyToClipboard(elem) {
 			</textarea>
 		</div>	
 	
-		<label class="mainLabel">Generated Polygon</label>	
+		<label class="mainLabel">Generated Polygon (Ctrl-C to copy)</label>	
 		<div   id="dataPanel">
 		</div>
 		
